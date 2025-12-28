@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ZakovskaApp.Controller\ZakovskaApp.Controller.csproj" />
+		<ProjectReference Include="..\ZakovskaApp.Data\ZakovskaApp.Data.csproj" />
+		<ProjectReference Include="..\ZakovskaApp.Service\ZakovskaApp.Service.csproj" />
+		<ProjectReference Include="..\ZakovskaApp.View\ZakovskaApp.View.csproj" />
+	</ItemGroup>
+
+</Project>
