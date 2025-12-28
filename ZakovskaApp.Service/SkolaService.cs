@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ZakovskaApp.Data;
 
+using System.Text.Json;
+using System.IO;
+
 namespace ZakovskaApp.Service
 {
     public class SkolaService
@@ -24,15 +27,20 @@ namespace ZakovskaApp.Service
 
         public void CreateStudent(string jmeno, string prijmeni)
         {
+
+            int newId = _studenti.Any() ? _studenti.Max(s => s.Id) + 1 : 1;
+
             Student student = new Student
             {
+                Id = newId,
                 Jmeno = jmeno,
                 Prijmeni = prijmeni
+                
             };
             _studenti.Add(student);
         }
 
-        public void GradeStudent(Guid studentId, string predmet, int hodnota)
+        public void GradeStudent(int studentId, string predmet, int hodnota)
         {
             Student student = _studenti.FirstOrDefault(s => s.Id == studentId);
             if (student != null)
@@ -46,17 +54,21 @@ namespace ZakovskaApp.Service
             }
         }
 
-        public void CreateSampleData()
+     
+
+        public void SaveData(string filePath)
         {
-            Student s1 = new Student { Jmeno = "Jan", Prijmeni = "Novák" };
-            s1.Znamky.Add(new Znamka { hodnota = 1, predmet = "Matematika" });
-            s1.Znamky.Add(new Znamka { hodnota = 2, predmet = "Čeština" });
+            string json = JsonSerializer.Serialize(_studenti, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(filePath, json);
+        }
 
-            Student s2 = new Student { Jmeno = "Petr", Prijmeni = "Svoboda" };
-            s2.Znamky.Add(new Znamka { hodnota = 3, predmet = "Angličtina" });
-
-            _studenti.Add(s1);
-            _studenti.Add(s2);
+        public void LoadData(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                string json = File.ReadAllText(filePath);
+                _studenti = JsonSerializer.Deserialize<List<Student>>(json) ?? new List<Student>();
+            }
         }
     }
 }

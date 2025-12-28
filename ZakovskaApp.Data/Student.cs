@@ -8,7 +8,7 @@ namespace ZakovskaApp.Data
 {
     public class Student
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
         public string Jmeno { get; set; }
         public string Prijmeni { get; set; }
 

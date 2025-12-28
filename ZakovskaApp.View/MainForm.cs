@@ -15,6 +15,12 @@ namespace ZakovskaApp.View
         public event EventHandler onAddStudent;
         public event EventHandler onAddGrade;
         public event EventHandler onStudentSelected;
+
+        public event EventHandler onSave;
+        public event EventHandler onLoad;
+
+        public event EventHandler onGenerateData;
+
         public MainForm()
         {
             InitializeComponent();
@@ -22,7 +28,13 @@ namespace ZakovskaApp.View
             btnAddStudent.Click += (s, e) => onAddStudent?.Invoke(this, EventArgs.Empty);
             btnAddGrade.Click += (s, e) => onAddGrade?.Invoke(this, EventArgs.Empty);
             gridStudents.SelectionChanged += (s, e) => onStudentSelected?.Invoke(this, EventArgs.Empty);
+
+            btnSave.Click += (s, e) => onSave?.Invoke(this, EventArgs.Empty);
+            btnLoad.Click += (s, e) => onLoad?.Invoke(this, EventArgs.Empty);
+            btnGen.Click += (s, e) => onGenerateData?.Invoke(this, EventArgs.Empty);
         }
+
+
 
         public string GetFirstName()
         {
@@ -58,7 +70,6 @@ namespace ZakovskaApp.View
             gridStudents.DataSource = bindingSource;
 
 
-            if (gridStudents.Columns["Id"] != null) gridStudents.Columns["Id"].Visible = false;
         }
 
         public void ShowStudentDetails(Student student)
@@ -77,6 +88,33 @@ namespace ZakovskaApp.View
         {
             txtJmeno.Text = "";
             txtPrijmeni.Text = "";
+        }
+
+        public string GetSaveFileName()
+        {
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "JSON soubory (*.json)|*.json|Všechny soubory (*.*)|*.*";
+                sfd.DefaultExt = "json";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    return sfd.FileName;
+                }
+            }
+            return string.Empty;
+        }
+
+        public string GetOpenFileName()
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "JSON soubory (*.json)|*.json|Všechny soubory (*.*)|*.*";
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    return ofd.FileName;
+                }
+            }
+            return string.Empty;
         }
 
         private void MainForm_Load(object sender, EventArgs e)

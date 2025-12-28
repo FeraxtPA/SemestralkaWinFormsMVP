@@ -18,7 +18,7 @@ namespace SemestralkaWinFormsMVP
             ApplicationConfiguration.Initialize();
 
             SkolaService service = new SkolaService();
-            service.CreateSampleData();
+           
 
             MainForm view = new MainForm();
 

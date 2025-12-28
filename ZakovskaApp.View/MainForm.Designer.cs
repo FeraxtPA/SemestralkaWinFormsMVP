@@ -36,6 +36,9 @@
             numZnamka = new NumericUpDown();
             cmbPredmet = new ComboBox();
             lstDetail = new ListBox();
+            btnSave = new Button();
+            btnLoad = new Button();
+            btnGen = new Button();
             ((System.ComponentModel.ISupportInitialize)gridStudents).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numZnamka).BeginInit();
             SuspendLayout();
@@ -98,7 +101,7 @@
             // cmbPredmet
             // 
             cmbPredmet.FormattingEnabled = true;
-            cmbPredmet.Items.AddRange(new object[] { "Čeština", "Angličtina", "Matematika" });
+            cmbPredmet.Items.AddRange(new object[] { "Čeština", "Angličtina", "Matematika", "Dějepis", "Zeměpis", "Fyzika", "Chemie" });
             cmbPredmet.Location = new Point(1059, 111);
             cmbPredmet.Name = "cmbPredmet";
             cmbPredmet.Size = new Size(182, 33);
@@ -113,12 +116,42 @@
             lstDetail.Size = new Size(328, 429);
             lstDetail.TabIndex = 7;
             // 
+            // btnSave
+            // 
+            btnSave.Location = new Point(1111, 264);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(112, 34);
+            btnSave.TabIndex = 8;
+            btnSave.Text = "Uložit";
+            btnSave.UseVisualStyleBackColor = true;
+            // 
+            // btnLoad
+            // 
+            btnLoad.Location = new Point(1111, 392);
+            btnLoad.Name = "btnLoad";
+            btnLoad.Size = new Size(112, 34);
+            btnLoad.TabIndex = 9;
+            btnLoad.Text = "Načíst";
+            btnLoad.UseVisualStyleBackColor = true;
+            // 
+            // btnGen
+            // 
+            btnGen.Location = new Point(1111, 520);
+            btnGen.Name = "btnGen";
+            btnGen.Size = new Size(112, 34);
+            btnGen.TabIndex = 10;
+            btnGen.Text = "Vygeneruj";
+            btnGen.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(1258, 664);
+            Controls.Add(btnGen);
+            Controls.Add(btnLoad);
+            Controls.Add(btnSave);
             Controls.Add(lstDetail);
             Controls.Add(cmbPredmet);
             Controls.Add(numZnamka);
@@ -146,5 +179,8 @@
         private NumericUpDown numZnamka;
         private ComboBox cmbPredmet;
         private ListBox lstDetail;
+        private Button btnSave;
+        private Button btnLoad;
+        private Button btnGen;
     }
 }
