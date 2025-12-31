@@ -73,6 +73,29 @@ namespace ZakovskaApp.Service
             }
         }
 
+        public void UpdateGrade(int studentId, Znamka originalGrade, string newPredmet, int newHodnota)
+        {
+            Student student = _studenti.FirstOrDefault(s => s.Id == studentId);
+            
+            if (student != null)
+            {
+                Znamka grade = student.Znamky.FirstOrDefault(z => z == originalGrade);
+                if (grade != null)
+                {
+                    grade.predmet = newPredmet;
+                    grade.hodnota = newHodnota;
+                }
+            }
+        }
+
+        public void DeleteGrade(int studentId, Znamka gradeToDelete)
+        {
+            Student student = _studenti.FirstOrDefault(s => s.Id == studentId);
+            if (student != null)
+            {
+                student.Znamky.Remove(gradeToDelete);
+            }
+        }
 
         public void SaveData(string filePath)
         {

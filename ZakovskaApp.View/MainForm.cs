@@ -24,6 +24,9 @@ namespace ZakovskaApp.View
         public event EventHandler onDeleteStudent;
         public event EventHandler onEditStudent;
 
+        public event EventHandler onEditGrade;
+        public event EventHandler onDeleteGrade;
+
         public MainForm()
         {
             InitializeComponent();
@@ -38,6 +41,19 @@ namespace ZakovskaApp.View
 
             btnDelete.Click += (s, e) => onDeleteStudent?.Invoke(this, EventArgs.Empty);
             btnEdit.Click += (s, e) => onEditStudent?.Invoke(this, EventArgs.Empty);
+
+            btnEditGrade.Click += (s, e) => onEditGrade?.Invoke(this, EventArgs.Empty);
+            btnDeleteGrade.Click += (s, e) => onDeleteGrade?.Invoke(this, EventArgs.Empty);
+
+            lstDetail.SelectedIndexChanged += (s, e) =>
+            {
+                if (lstDetail.SelectedItem is Znamka z)
+                {
+                    cmbPredmet.Text = z.predmet;
+                    numZnamka.Value = z.hodnota;
+                }
+
+            };
         }
 
 
@@ -104,7 +120,7 @@ namespace ZakovskaApp.View
 
                 foreach (var g in student.Znamky)
                 {
-                    lstDetail.Items.Add(g.ToString());
+                    lstDetail.Items.Add(g);
                 }
             }
             else
@@ -145,6 +161,12 @@ namespace ZakovskaApp.View
                 }
             }
             return string.Empty;
+        }
+
+        public Znamka GetSelectedGrade()
+        {
+            if (lstDetail.SelectedItem is Znamka z) return z;
+            return null;
         }
 
         private void MainForm_Load(object sender, EventArgs e)

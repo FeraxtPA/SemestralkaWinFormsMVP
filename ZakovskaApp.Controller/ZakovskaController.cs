@@ -32,6 +32,9 @@ namespace ZakovskaApp.Controller
             _view.onDeleteStudent += OnDeleteStudent;
             _view.onEditStudent += OnEditStudent;
 
+            _view.onEditGrade += OnEditGrade;
+            _view.onDeleteGrade += OnDeleteGrade;
+
             RefreshGrid();
         }
 
@@ -80,6 +83,53 @@ namespace ZakovskaApp.Controller
 
         }
 
+        public void OnDeleteGrade(object sender, EventArgs e)
+        {
+            var student = _view.GetSelectedStudent();
+            if (student == null)
+            {
+                return;
+            }
+            var selectedGrade = _view.GetSelectedGrade();
+            if (selectedGrade == null)
+            {
+                return;
+            }
+            _service.DeleteGrade(student.Id, selectedGrade);
+            int studentId = student.Id;
+            RefreshGrid();
+            _view.SelectStudent(studentId);
+            Student updatedStudent = _view.GetSelectedStudent();
+            _view.ShowStudentDetails(updatedStudent);
+        }
+
+        public void OnEditGrade(object sender, EventArgs e)
+        {
+           
+            var student = _view.GetSelectedStudent();
+            if (student == null)
+            {
+                return;
+            }
+            var selectedGrade = _view.GetSelectedGrade();
+            if (selectedGrade == null)
+            {
+                return;
+            }
+
+            string predmet = _view.GetSubject();
+            int hodnota = _view.GetGradeValue();
+
+            _service.UpdateGrade(student.Id, selectedGrade, predmet, hodnota);
+
+            int studentId = student.Id;
+
+            RefreshGrid();
+            _view.SelectStudent(studentId);
+
+            Student updatedStudent = _view.GetSelectedStudent();
+            _view.ShowStudentDetails(updatedStudent);
+        }
         public void OnDeleteStudent(object sender, EventArgs e)
         {
             var student = _view.GetSelectedStudent();

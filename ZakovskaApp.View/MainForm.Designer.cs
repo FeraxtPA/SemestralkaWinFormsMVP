@@ -41,6 +41,8 @@
             btnGen = new Button();
             btnDelete = new Button();
             btnEdit = new Button();
+            btnEditGrade = new Button();
+            btnDeleteGrade = new Button();
             ((System.ComponentModel.ISupportInitialize)gridStudents).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numZnamka).BeginInit();
             SuspendLayout();
@@ -120,7 +122,7 @@
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(1111, 264);
+            btnSave.Location = new Point(1111, 280);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(112, 34);
             btnSave.TabIndex = 8;
@@ -129,7 +131,7 @@
             // 
             // btnLoad
             // 
-            btnLoad.Location = new Point(1111, 392);
+            btnLoad.Location = new Point(1111, 320);
             btnLoad.Name = "btnLoad";
             btnLoad.Size = new Size(112, 34);
             btnLoad.TabIndex = 9;
@@ -138,7 +140,7 @@
             // 
             // btnGen
             // 
-            btnGen.Location = new Point(1111, 520);
+            btnGen.Location = new Point(1111, 360);
             btnGen.Name = "btnGen";
             btnGen.Size = new Size(112, 34);
             btnGen.TabIndex = 10;
@@ -163,12 +165,32 @@
             btnEdit.Text = "Upravit žáka";
             btnEdit.UseVisualStyleBackColor = true;
             // 
+            // btnEditGrade
+            // 
+            btnEditGrade.Location = new Point(1059, 598);
+            btnEditGrade.Name = "btnEditGrade";
+            btnEditGrade.Size = new Size(155, 34);
+            btnEditGrade.TabIndex = 13;
+            btnEditGrade.Text = "Uprav  známku";
+            btnEditGrade.UseVisualStyleBackColor = true;
+            // 
+            // btnDeleteGrade
+            // 
+            btnDeleteGrade.Location = new Point(1059, 558);
+            btnDeleteGrade.Name = "btnDeleteGrade";
+            btnDeleteGrade.Size = new Size(155, 34);
+            btnDeleteGrade.TabIndex = 14;
+            btnDeleteGrade.Text = "Odstraň známku";
+            btnDeleteGrade.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(1258, 664);
+            Controls.Add(btnDeleteGrade);
+            Controls.Add(btnEditGrade);
             Controls.Add(btnEdit);
             Controls.Add(btnDelete);
             Controls.Add(btnGen);
@@ -206,5 +228,7 @@
         private Button btnGen;
         private Button btnDelete;
         private Button btnEdit;
+        private Button btnEditGrade;
+        private Button btnDeleteGrade;
     }
 }
