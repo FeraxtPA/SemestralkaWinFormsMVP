@@ -9,19 +9,19 @@ namespace ZakovskaApp.Data
     public class Student
     {
         public int Id { get; set; }
-        public string Jmeno { get; set; }
-        public string Prijmeni { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
 
-        public List<Znamka> Znamky { get; set; } = new List<Znamka>();
+        public List<Grade> Grades { get; set; } = new List<Grade>();
 
-        public string CeleJmeno => $"{Jmeno} {Prijmeni}";
+        public string FullName => $"{Name} {Surname}";
 
-        public double Prumer
+        public double Average
         {
             get
             {
-                if (Znamky.Count == 0) return 0;
-                return Znamky.Average(z => z.hodnota);
+                if (Grades.Count == 0) return 0;
+                return Grades.Average(z => z.value);
             }
         }
     }

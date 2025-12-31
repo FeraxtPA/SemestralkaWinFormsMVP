@@ -27,6 +27,8 @@ namespace ZakovskaApp.View
         public event EventHandler onEditGrade;
         public event EventHandler onDeleteGrade;
 
+        
+
         public MainForm()
         {
             InitializeComponent();
@@ -69,10 +71,10 @@ namespace ZakovskaApp.View
 
             lstDetail.SelectedIndexChanged += (s, e) =>
             {
-                if (lstDetail.SelectedItem is Znamka z)
+                if (lstDetail.SelectedItem is Grade z)
                 {
-                    cmbPredmet.Text = z.predmet;
-                    numZnamka.Value = z.hodnota;
+                    cmbPredmet.Text = z.subject;
+                    numZnamka.Value = z.value;
                 }
 
             };
@@ -139,10 +141,10 @@ namespace ZakovskaApp.View
             lstDetail.Items.Clear();
             if (student != null)
             {
-                txtJmeno.Text = student.Jmeno;
-                txtPrijmeni.Text = student.Prijmeni;
+                txtJmeno.Text = student.Name;
+                txtPrijmeni.Text = student.Surname;
 
-                foreach (var g in student.Znamky)
+                foreach (var g in student.Grades)
                 {
                     lstDetail.Items.Add(g);
                 }
@@ -194,9 +196,9 @@ namespace ZakovskaApp.View
             return string.Empty;
         }
 
-        public Znamka GetSelectedGrade()
+        public Grade GetSelectedGrade()
         {
-            if (lstDetail.SelectedItem is Znamka z) return z;
+            if (lstDetail.SelectedItem is Grade z) return z;
             return null;
         }
 

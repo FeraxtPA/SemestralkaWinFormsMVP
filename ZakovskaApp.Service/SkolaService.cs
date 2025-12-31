@@ -11,95 +11,95 @@ using System.IO;
 
 namespace ZakovskaApp.Service
 {
-    public class SkolaService
+    public class SchoolService
     {
-        private List<Student> _studenti;
+        private List<Student> _students;
 
-        public SkolaService()
+        public SchoolService()
         {
-            _studenti = new List<Student>();
+            _students = new List<Student>();
         }
 
         public List<Student> GetAllStudents()
         {
-            return _studenti;
+            return _students;
         }
 
-        public void CreateStudent(string jmeno, string prijmeni)
+        public void CreateStudent(string name, string surname)
         {
 
-            int newId = _studenti.Any() ? _studenti.Max(s => s.Id) + 1 : 1;
+            int newId = _students.Any() ? _students.Max(s => s.Id) + 1 : 1;
 
             Student student = new Student
             {
                 Id = newId,
-                Jmeno = jmeno,
-                Prijmeni = prijmeni
+                Name = name,
+                Surname = surname
                 
             };
-            _studenti.Add(student);
+            _students.Add(student);
         }
 
-        public void GradeStudent(int studentId, string predmet, int hodnota)
+        public void GradeStudent(int studentId, string subject, int value)
         {
-            Student student = _studenti.FirstOrDefault(s => s.Id == studentId);
+            Student student = _students.FirstOrDefault(s => s.Id == studentId);
             if (student != null)
             {
-                Znamka znamka = new Znamka
+                Grade grade = new Grade
                 {
-                    predmet = predmet,
-                    hodnota = hodnota
+                    subject = subject,
+                    value = value
                 };
-                student.Znamky.Add(znamka);
+                student.Grades.Add(grade);
             }
         }
 
-        public void UpdateStudent(int studentId, string newJmeno, string newPrijmeni)
+        public void UpdateStudent(int studentId, string newName, string newSurname)
         {
-            Student student = _studenti.FirstOrDefault(s => s.Id == studentId);
+            Student student = _students.FirstOrDefault(s => s.Id == studentId);
             if (student != null)
             {
-                student.Jmeno = newJmeno;
-                student.Prijmeni = newPrijmeni;
+                student.Name = newName;
+                student.Surname = newSurname;
             }
         }
 
         public void DeleteStudent(int studentId)
         {
-            Student student = _studenti.FirstOrDefault(s => s.Id == studentId);
+            Student student = _students.FirstOrDefault(s => s.Id == studentId);
             if (student != null)
             {
-                _studenti.Remove(student);
+                _students.Remove(student);
             }
         }
 
-        public void UpdateGrade(int studentId, Znamka originalGrade, string newPredmet, int newHodnota)
+        public void UpdateGrade(int studentId, Grade originalGrade, string newSubject, int newValue)
         {
-            Student student = _studenti.FirstOrDefault(s => s.Id == studentId);
+            Student student = _students.FirstOrDefault(s => s.Id == studentId);
             
             if (student != null)
             {
-                Znamka grade = student.Znamky.FirstOrDefault(z => z == originalGrade);
+                Grade grade = student.Grades.FirstOrDefault(z => z == originalGrade);
                 if (grade != null)
                 {
-                    grade.predmet = newPredmet;
-                    grade.hodnota = newHodnota;
+                    grade.subject = newSubject;
+                    grade.value = newValue;
                 }
             }
         }
 
-        public void DeleteGrade(int studentId, Znamka gradeToDelete)
+        public void DeleteGrade(int studentId, Grade gradeToDelete)
         {
-            Student student = _studenti.FirstOrDefault(s => s.Id == studentId);
+            Student student = _students.FirstOrDefault(s => s.Id == studentId);
             if (student != null)
             {
-                student.Znamky.Remove(gradeToDelete);
+                student.Grades.Remove(gradeToDelete);
             }
         }
 
         public void SaveData(string filePath)
         {
-            string json = JsonSerializer.Serialize(_studenti, new JsonSerializerOptions { WriteIndented = true });
+            string json = JsonSerializer.Serialize(_students, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(filePath, json);
         }
 
@@ -108,7 +108,7 @@ namespace ZakovskaApp.Service
             if (File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
-                _studenti = JsonSerializer.Deserialize<List<Student>>(json) ?? new List<Student>();
+                _students = JsonSerializer.Deserialize<List<Student>>(json) ?? new List<Student>();
             }
         }
     }

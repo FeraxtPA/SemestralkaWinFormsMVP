@@ -64,7 +64,7 @@
             // 
             // btnAddStudent
             // 
-            btnAddStudent.Location = new Point(725, 37);
+            btnAddStudent.Location = new Point(712, 12);
             btnAddStudent.Name = "btnAddStudent";
             btnAddStudent.Size = new Size(142, 34);
             btnAddStudent.TabIndex = 1;
@@ -73,7 +73,7 @@
             // 
             // btnAddGrade
             // 
-            btnAddGrade.Location = new Point(725, 108);
+            btnAddGrade.Location = new Point(712, 92);
             btnAddGrade.Name = "btnAddGrade";
             btnAddGrade.Size = new Size(142, 34);
             btnAddGrade.TabIndex = 2;
@@ -82,21 +82,21 @@
             // 
             // txtJmeno
             // 
-            txtJmeno.Location = new Point(873, 40);
+            txtJmeno.Location = new Point(860, 14);
             txtJmeno.Name = "txtJmeno";
             txtJmeno.Size = new Size(150, 31);
             txtJmeno.TabIndex = 3;
             // 
             // txtPrijmeni
             // 
-            txtPrijmeni.Location = new Point(1029, 40);
+            txtPrijmeni.Location = new Point(1016, 14);
             txtPrijmeni.Name = "txtPrijmeni";
             txtPrijmeni.Size = new Size(150, 31);
             txtPrijmeni.TabIndex = 4;
             // 
             // numZnamka
             // 
-            numZnamka.Location = new Point(873, 111);
+            numZnamka.Location = new Point(860, 95);
             numZnamka.Maximum = new decimal(new int[] { 5, 0, 0, 0 });
             numZnamka.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numZnamka.Name = "numZnamka";
@@ -108,7 +108,7 @@
             // 
             cmbPredmet.FormattingEnabled = true;
             cmbPredmet.Items.AddRange(new object[] { "Čeština", "Angličtina", "Matematika", "Dějepis", "Zeměpis", "Fyzika", "Chemie" });
-            cmbPredmet.Location = new Point(1059, 111);
+            cmbPredmet.Location = new Point(1046, 95);
             cmbPredmet.Name = "cmbPredmet";
             cmbPredmet.Size = new Size(182, 33);
             cmbPredmet.TabIndex = 6;
@@ -117,14 +117,14 @@
             // 
             lstDetail.FormattingEnabled = true;
             lstDetail.ItemHeight = 25;
-            lstDetail.Location = new Point(725, 203);
+            lstDetail.Location = new Point(712, 172);
             lstDetail.Name = "lstDetail";
-            lstDetail.Size = new Size(328, 429);
+            lstDetail.Size = new Size(380, 479);
             lstDetail.TabIndex = 7;
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(1111, 280);
+            btnSave.Location = new Point(1098, 172);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(112, 34);
             btnSave.TabIndex = 8;
@@ -133,7 +133,7 @@
             // 
             // btnLoad
             // 
-            btnLoad.Location = new Point(1111, 320);
+            btnLoad.Location = new Point(1098, 212);
             btnLoad.Name = "btnLoad";
             btnLoad.Size = new Size(112, 34);
             btnLoad.TabIndex = 9;
@@ -142,7 +142,7 @@
             // 
             // btnGen
             // 
-            btnGen.Location = new Point(1111, 360);
+            btnGen.Location = new Point(1098, 252);
             btnGen.Name = "btnGen";
             btnGen.Size = new Size(112, 34);
             btnGen.TabIndex = 10;
@@ -151,7 +151,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(725, 163);
+            btnDelete.Location = new Point(712, 52);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(142, 34);
             btnDelete.TabIndex = 11;
@@ -160,7 +160,7 @@
             // 
             // btnEdit
             // 
-            btnEdit.Location = new Point(873, 163);
+            btnEdit.Location = new Point(860, 52);
             btnEdit.Name = "btnEdit";
             btnEdit.Size = new Size(142, 34);
             btnEdit.TabIndex = 12;
@@ -169,9 +169,9 @@
             // 
             // btnEditGrade
             // 
-            btnEditGrade.Location = new Point(1059, 598);
+            btnEditGrade.Location = new Point(712, 132);
             btnEditGrade.Name = "btnEditGrade";
-            btnEditGrade.Size = new Size(155, 34);
+            btnEditGrade.Size = new Size(142, 34);
             btnEditGrade.TabIndex = 13;
             btnEditGrade.Text = "Uprav  známku";
             btnEditGrade.UseVisualStyleBackColor = true;

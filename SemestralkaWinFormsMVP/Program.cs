@@ -17,7 +17,7 @@ namespace SemestralkaWinFormsMVP
         {
             ApplicationConfiguration.Initialize();
 
-            SkolaService service = new SkolaService();
+            SchoolService service = new SchoolService();
            
 
             MainForm view = new MainForm();

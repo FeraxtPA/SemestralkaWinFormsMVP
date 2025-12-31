@@ -13,9 +13,9 @@ namespace ZakovskaApp.Controller
     public class ZakovskaController
     {
         private  MainForm _view;
-        private SkolaService _service;
+        private SchoolService _service;
 
-        public ZakovskaController(MainForm view, SkolaService service)
+        public ZakovskaController(MainForm view, SchoolService service)
         {
             _view = view;
             _service = service;
@@ -65,7 +65,7 @@ namespace ZakovskaApp.Controller
 
         public void OnEditStudent(object sender, EventArgs e)
         {
-            var student = _view.GetSelectedStudent();
+            Student student = _view.GetSelectedStudent();
             if (student == null)
             {
                 MessageBox.Show("Nejdříve vyberte studenta k úpravě.", "Upozornění", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -82,11 +82,16 @@ namespace ZakovskaApp.Controller
             _view.ClearInput();
             RefreshGrid();
 
-            _view.SelectStudent(student.Id);
+            UpdateSelect(student.Id);
 
+
+        }
+
+        public void UpdateSelect(int id)
+        {
+            _view.SelectStudent(id);
             Student updatedStudent = _view.GetSelectedStudent();
             _view.ShowStudentDetails(updatedStudent);
-
 
         }
 
@@ -105,7 +110,7 @@ namespace ZakovskaApp.Controller
 
 
             var result = MessageBox.Show(
-               $"Opravdu chcete smazat známku {selectedGrade.predmet} {selectedGrade.hodnota}?",
+               $"Opravdu chcete smazat známku {selectedGrade.subject} {selectedGrade.value}?",
                "Potvrzení smazání",
                MessageBoxButtons.YesNo,
                MessageBoxIcon.Warning
@@ -117,11 +122,10 @@ namespace ZakovskaApp.Controller
             }
 
             _service.DeleteGrade(student.Id, selectedGrade);
-            int studentId = student.Id;
+           
             RefreshGrid();
-            _view.SelectStudent(studentId);
-            Student updatedStudent = _view.GetSelectedStudent();
-            _view.ShowStudentDetails(updatedStudent);
+            
+            UpdateSelect(student.Id);
         }
 
         public void OnEditGrade(object sender, EventArgs e)
@@ -143,13 +147,11 @@ namespace ZakovskaApp.Controller
 
             _service.UpdateGrade(student.Id, selectedGrade, predmet, hodnota);
 
-            int studentId = student.Id;
+         
 
             RefreshGrid();
-            _view.SelectStudent(studentId);
-
-            Student updatedStudent = _view.GetSelectedStudent();
-            _view.ShowStudentDetails(updatedStudent);
+            
+            UpdateSelect(student.Id);
         }
         public void OnDeleteStudent(object sender, EventArgs e)
         {
@@ -160,7 +162,7 @@ namespace ZakovskaApp.Controller
             }
 
             var result = MessageBox.Show(
-                $"Opravdu chcete smazat studenta {student.CeleJmeno}?",
+                $"Opravdu chcete smazat studenta {student.FullName}?",
                 "Potvrzení smazání",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning
@@ -197,35 +199,32 @@ namespace ZakovskaApp.Controller
             }
             _service.GradeStudent(student.Id, _view.GetSubject(), _view.GetGradeValue());
 
-            // Aktualizujeme tabulku (kvůli průměru) i detail známek
+         
             RefreshGrid();
 
-            _view.SelectStudent(studentId);
-
-            Student updatedStudent = _view.GetSelectedStudent();
-            _view.ShowStudentDetails(updatedStudent);
+            UpdateSelect(student.Id);
 
             _view.ResetGradeInputs();
         }
 
         private void OnStudentSelected(object sender, EventArgs e)
         {
-            var student = _view.GetSelectedStudent();
+            Student student = _view.GetSelectedStudent();
             _view.ShowStudentDetails(student);
         }
 
         private void RefreshGrid()
         {
-            var list = _service.GetAllStudents();
+            List<Student> list = _service.GetAllStudents();
             _view.DisplayStudents(list);
         }
 
         private void OnSave(object sender, EventArgs e)
         {
-            // 1. Zeptáme se View na cestu k souboru
+          
             string path = _view.GetSaveFileName();
 
-            // 2. Pokud uživatel vybral soubor, uložíme data přes Service
+           
             if (!string.IsNullOrEmpty(path))
             {
                 try
@@ -242,18 +241,18 @@ namespace ZakovskaApp.Controller
 
         private void OnLoad(object sender, EventArgs e)
         {
-            // 1. Zeptáme se View na cestu k souboru
+           
             string path = _view.GetOpenFileName();
 
-            // 2. Pokud uživatel vybral soubor, načteme data přes Service a obnovíme tabulku
+          
             if (!string.IsNullOrEmpty(path))
             {
                 try
                 {
                     _service.LoadData(path);
-                    RefreshGrid(); // Důležité: aktualizovat View novými daty
+                    RefreshGrid(); 
 
-                    // Vyčistit detaily, protože vybraný student se mohl změnit/zmizet
+                
                     _view.ShowStudentDetails(null);
                     MessageBox.Show("Data byla načtena.");
                 }
