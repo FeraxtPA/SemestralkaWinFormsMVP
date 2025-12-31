@@ -39,6 +39,8 @@
             btnSave = new Button();
             btnLoad = new Button();
             btnGen = new Button();
+            btnDelete = new Button();
+            btnEdit = new Button();
             ((System.ComponentModel.ISupportInitialize)gridStudents).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numZnamka).BeginInit();
             SuspendLayout();
@@ -143,12 +145,32 @@
             btnGen.Text = "Vygeneruj";
             btnGen.UseVisualStyleBackColor = true;
             // 
+            // btnDelete
+            // 
+            btnDelete.Location = new Point(725, 163);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(142, 34);
+            btnDelete.TabIndex = 11;
+            btnDelete.Text = "Odstraň žáka";
+            btnDelete.UseVisualStyleBackColor = true;
+            // 
+            // btnEdit
+            // 
+            btnEdit.Location = new Point(873, 163);
+            btnEdit.Name = "btnEdit";
+            btnEdit.Size = new Size(142, 34);
+            btnEdit.TabIndex = 12;
+            btnEdit.Text = "Upravit žáka";
+            btnEdit.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(1258, 664);
+            Controls.Add(btnEdit);
+            Controls.Add(btnDelete);
             Controls.Add(btnGen);
             Controls.Add(btnLoad);
             Controls.Add(btnSave);
@@ -182,5 +204,7 @@
         private Button btnSave;
         private Button btnLoad;
         private Button btnGen;
+        private Button btnDelete;
+        private Button btnEdit;
     }
 }

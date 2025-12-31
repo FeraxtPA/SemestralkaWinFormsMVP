@@ -29,6 +29,9 @@ namespace ZakovskaApp.Controller
 
             _view.onGenerateData += GenerateTestData;
 
+            _view.onDeleteStudent += OnDeleteStudent;
+            _view.onEditStudent += OnEditStudent;
+
             RefreshGrid();
         }
 
@@ -52,6 +55,44 @@ namespace ZakovskaApp.Controller
             RefreshGrid();
         }
 
+        public void OnEditStudent(object sender, EventArgs e)
+        {
+            var student = _view.GetSelectedStudent();
+            if (student == null)
+            {
+                return;
+            }
+            string newFirst = _view.GetFirstName();
+            string newLast = _view.GetLastName();
+            if (string.IsNullOrWhiteSpace(newFirst) || string.IsNullOrWhiteSpace(newLast))
+            {
+                return;
+            }
+            _service.UpdateStudent(student.Id, newFirst, newLast);
+            _view.ClearInput();
+            RefreshGrid();
+
+            _view.SelectStudent(student.Id);
+
+            Student updatedStudent = _view.GetSelectedStudent();
+            _view.ShowStudentDetails(updatedStudent);
+
+
+        }
+
+        public void OnDeleteStudent(object sender, EventArgs e)
+        {
+            var student = _view.GetSelectedStudent();
+            if (student == null)
+            {
+                return;
+            }
+            _service.DeleteStudent(student.Id);
+            _view.ClearInput();
+            RefreshGrid();
+            _view.ShowStudentDetails(null);
+        }
+
         private void OnAddGrade(object sender, EventArgs e)
         {
             var student = _view.GetSelectedStudent();
@@ -61,11 +102,17 @@ namespace ZakovskaApp.Controller
                 return;
             }
 
+            int studentId = student.Id;
+
             _service.GradeStudent(student.Id, _view.GetSubject(), _view.GetGradeValue());
 
             // Aktualizujeme tabulku (kvůli průměru) i detail známek
             RefreshGrid();
-            _view.ShowStudentDetails(student);
+
+            _view.SelectStudent(studentId);
+
+            Student updatedStudent = _view.GetSelectedStudent();
+            _view.ShowStudentDetails(updatedStudent);
         }
 
         private void OnStudentSelected(object sender, EventArgs e)

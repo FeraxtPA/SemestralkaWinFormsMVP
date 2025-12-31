@@ -54,7 +54,25 @@ namespace ZakovskaApp.Service
             }
         }
 
-     
+        public void UpdateStudent(int studentId, string newJmeno, string newPrijmeni)
+        {
+            Student student = _studenti.FirstOrDefault(s => s.Id == studentId);
+            if (student != null)
+            {
+                student.Jmeno = newJmeno;
+                student.Prijmeni = newPrijmeni;
+            }
+        }
+
+        public void DeleteStudent(int studentId)
+        {
+            Student student = _studenti.FirstOrDefault(s => s.Id == studentId);
+            if (student != null)
+            {
+                _studenti.Remove(student);
+            }
+        }
+
 
         public void SaveData(string filePath)
         {

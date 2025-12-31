@@ -21,6 +21,9 @@ namespace ZakovskaApp.View
 
         public event EventHandler onGenerateData;
 
+        public event EventHandler onDeleteStudent;
+        public event EventHandler onEditStudent;
+
         public MainForm()
         {
             InitializeComponent();
@@ -32,6 +35,9 @@ namespace ZakovskaApp.View
             btnSave.Click += (s, e) => onSave?.Invoke(this, EventArgs.Empty);
             btnLoad.Click += (s, e) => onLoad?.Invoke(this, EventArgs.Empty);
             btnGen.Click += (s, e) => onGenerateData?.Invoke(this, EventArgs.Empty);
+
+            btnDelete.Click += (s, e) => onDeleteStudent?.Invoke(this, EventArgs.Empty);
+            btnEdit.Click += (s, e) => onEditStudent?.Invoke(this, EventArgs.Empty);
         }
 
 
@@ -66,10 +72,26 @@ namespace ZakovskaApp.View
         {
 
             var bindingSource = new BindingSource();
-            bindingSource.DataSource = studenti;
+            bindingSource.DataSource = new List<Student>(studenti);
+
             gridStudents.DataSource = bindingSource;
 
 
+        }
+
+        public void SelectStudent(int studentId)
+        {
+            gridStudents.ClearSelection();  
+
+            foreach (DataGridViewRow row in gridStudents.Rows)
+            {
+                if (row.DataBoundItem is Student s && s.Id == studentId)
+                {
+                    row.Selected = true;
+                    gridStudents.CurrentCell = row.Cells[0];
+                    break;
+                }
+            }
         }
 
         public void ShowStudentDetails(Student student)
@@ -77,10 +99,18 @@ namespace ZakovskaApp.View
             lstDetail.Items.Clear();
             if (student != null)
             {
+                txtJmeno.Text = student.Jmeno;
+                txtPrijmeni.Text = student.Prijmeni;
+
                 foreach (var g in student.Znamky)
                 {
                     lstDetail.Items.Add(g.ToString());
                 }
+            }
+            else
+            {
+                txtJmeno.Text = "";
+                txtPrijmeni.Text = "";
             }
         }
 
@@ -121,5 +151,7 @@ namespace ZakovskaApp.View
         {
 
         }
+
+      
     }
 }
