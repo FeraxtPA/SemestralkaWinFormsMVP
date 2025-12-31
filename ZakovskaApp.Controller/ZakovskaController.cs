@@ -49,7 +49,12 @@ namespace ZakovskaApp.Controller
             string last = _view.GetLastName();
 
             if (string.IsNullOrWhiteSpace(first) || string.IsNullOrWhiteSpace(last))
-            { 
+            {
+                MessageBox.Show("Jméno a příjmení nesmí být prázdné!",
+                        "Chyba zadání",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
                 return;
             }
 
@@ -63,12 +68,14 @@ namespace ZakovskaApp.Controller
             var student = _view.GetSelectedStudent();
             if (student == null)
             {
+                MessageBox.Show("Nejdříve vyberte studenta k úpravě.", "Upozornění", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             string newFirst = _view.GetFirstName();
             string newLast = _view.GetLastName();
             if (string.IsNullOrWhiteSpace(newFirst) || string.IsNullOrWhiteSpace(newLast))
             {
+                MessageBox.Show("Jméno a příjmení nesmí být prázdné!", "Chyba zadání", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             _service.UpdateStudent(student.Id, newFirst, newLast);
@@ -95,6 +102,20 @@ namespace ZakovskaApp.Controller
             {
                 return;
             }
+
+
+            var result = MessageBox.Show(
+               $"Opravdu chcete smazat známku {selectedGrade.predmet} {selectedGrade.hodnota}?",
+               "Potvrzení smazání",
+               MessageBoxButtons.YesNo,
+               MessageBoxIcon.Warning
+           );
+
+            if (result != DialogResult.Yes)
+            {
+                return;
+            }
+
             _service.DeleteGrade(student.Id, selectedGrade);
             int studentId = student.Id;
             RefreshGrid();
@@ -137,6 +158,18 @@ namespace ZakovskaApp.Controller
             {
                 return;
             }
+
+            var result = MessageBox.Show(
+                $"Opravdu chcete smazat studenta {student.CeleJmeno}?",
+                "Potvrzení smazání",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (result != DialogResult.Yes)
+            {
+                return;
+            }
             _service.DeleteStudent(student.Id);
             _view.ClearInput();
             RefreshGrid();
@@ -154,6 +187,14 @@ namespace ZakovskaApp.Controller
 
             int studentId = student.Id;
 
+            if (string.IsNullOrWhiteSpace(_view.GetSubject()))
+            {
+                MessageBox.Show("Předmět nesmí být prázdný!",
+                        "Chyba zadání",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                return;
+            }
             _service.GradeStudent(student.Id, _view.GetSubject(), _view.GetGradeValue());
 
             // Aktualizujeme tabulku (kvůli průměru) i detail známek
@@ -163,6 +204,8 @@ namespace ZakovskaApp.Controller
 
             Student updatedStudent = _view.GetSelectedStudent();
             _view.ShowStudentDetails(updatedStudent);
+
+            _view.ResetGradeInputs();
         }
 
         private void OnStudentSelected(object sender, EventArgs e)

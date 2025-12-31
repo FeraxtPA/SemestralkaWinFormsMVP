@@ -31,6 +31,28 @@ namespace ZakovskaApp.View
         {
             InitializeComponent();
 
+
+            ContextMenuStrip gradeMenu = new ContextMenuStrip();
+            ToolStripMenuItem deleteItem = new ToolStripMenuItem("Smazat známku");
+
+            deleteItem.Click += (s, e) => onDeleteGrade?.Invoke(this, EventArgs.Empty);
+            gradeMenu.Items.Add(deleteItem);
+
+            lstDetail.ContextMenuStrip = gradeMenu;
+
+            lstDetail.MouseDown += (s, e) =>
+            {
+                if (e.Button == MouseButtons.Right)
+                {
+                    int index = lstDetail.IndexFromPoint(e.Location);
+                    if (index != ListBox.NoMatches)
+                    {
+                        lstDetail.SelectedIndex = index;
+                    }
+                }
+            };
+           
+
             btnAddStudent.Click += (s, e) => onAddStudent?.Invoke(this, EventArgs.Empty);
             btnAddGrade.Click += (s, e) => onAddGrade?.Invoke(this, EventArgs.Empty);
             gridStudents.SelectionChanged += (s, e) => onStudentSelected?.Invoke(this, EventArgs.Empty);
@@ -43,7 +65,7 @@ namespace ZakovskaApp.View
             btnEdit.Click += (s, e) => onEditStudent?.Invoke(this, EventArgs.Empty);
 
             btnEditGrade.Click += (s, e) => onEditGrade?.Invoke(this, EventArgs.Empty);
-            btnDeleteGrade.Click += (s, e) => onDeleteGrade?.Invoke(this, EventArgs.Empty);
+          
 
             lstDetail.SelectedIndexChanged += (s, e) =>
             {
@@ -56,6 +78,8 @@ namespace ZakovskaApp.View
             };
         }
 
+
+      
 
 
         public string GetFirstName()
@@ -128,6 +152,13 @@ namespace ZakovskaApp.View
                 txtJmeno.Text = "";
                 txtPrijmeni.Text = "";
             }
+        }
+
+        public void ResetGradeInputs()
+        {
+            cmbPredmet.SelectedIndex = -1;
+            numZnamka.Value = 1;           
+            cmbPredmet.Focus();          
         }
 
         public void ClearInput()

@@ -42,7 +42,6 @@
             btnDelete = new Button();
             btnEdit = new Button();
             btnEditGrade = new Button();
-            btnDeleteGrade = new Button();
             ((System.ComponentModel.ISupportInitialize)gridStudents).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numZnamka).BeginInit();
             SuspendLayout();
@@ -51,10 +50,13 @@
             // 
             gridStudents.AllowUserToAddRows = false;
             gridStudents.AllowUserToDeleteRows = false;
+            gridStudents.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             gridStudents.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             gridStudents.Location = new Point(12, 12);
+            gridStudents.MultiSelect = false;
             gridStudents.Name = "gridStudents";
             gridStudents.ReadOnly = true;
+            gridStudents.RowHeadersVisible = false;
             gridStudents.RowHeadersWidth = 62;
             gridStudents.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             gridStudents.Size = new Size(694, 640);
@@ -174,22 +176,12 @@
             btnEditGrade.Text = "Uprav  známku";
             btnEditGrade.UseVisualStyleBackColor = true;
             // 
-            // btnDeleteGrade
-            // 
-            btnDeleteGrade.Location = new Point(1059, 558);
-            btnDeleteGrade.Name = "btnDeleteGrade";
-            btnDeleteGrade.Size = new Size(155, 34);
-            btnDeleteGrade.TabIndex = 14;
-            btnDeleteGrade.Text = "Odstraň známku";
-            btnDeleteGrade.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(1258, 664);
-            Controls.Add(btnDeleteGrade);
             Controls.Add(btnEditGrade);
             Controls.Add(btnEdit);
             Controls.Add(btnDelete);
@@ -229,6 +221,5 @@
         private Button btnDelete;
         private Button btnEdit;
         private Button btnEditGrade;
-        private Button btnDeleteGrade;
     }
 }
