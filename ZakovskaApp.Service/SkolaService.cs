@@ -9,8 +9,10 @@ using ZakovskaApp.Data;
 using System.Text.Json;
 using System.IO;
 
+
 namespace ZakovskaApp.Service
 {
+    // Aplikační logika - Service (Model v MVP)
     public class SchoolService
     {
         private List<Student> _students;

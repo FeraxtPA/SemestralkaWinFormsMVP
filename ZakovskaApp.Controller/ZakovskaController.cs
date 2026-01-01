@@ -9,7 +9,8 @@ using ZakovskaApp.View;
 
 namespace ZakovskaApp.Controller
 {
-   
+
+    // Prezentacni vrstva - Controller obsluhujici udalosti z View a vola sluzby ze Service(Model)
     public class ZakovskaController
     {
         private  MainForm _view;
@@ -20,6 +21,8 @@ namespace ZakovskaApp.Controller
             _view = view;
             _service = service;
 
+
+            // Observer Pattern - sleduje udalosti z View
             _view.onAddStudent +=  OnAddStudent;
             _view.onAddGrade += OnAddGrade;
             _view.onStudentSelected += OnStudentSelected;
@@ -43,6 +46,8 @@ namespace ZakovskaApp.Controller
             Application.Run(_view);
         }
 
+
+        // Handlery udalosti
         private void OnAddStudent(object sender, EventArgs e)
         {
             string first = _view.GetFirstName();
@@ -87,6 +92,8 @@ namespace ZakovskaApp.Controller
 
         }
 
+
+        // Pomocna metoda pro aktualizaci vybraneho studenta v gridu
         public void UpdateSelect(int id)
         {
             _view.SelectStudent(id);
@@ -108,7 +115,7 @@ namespace ZakovskaApp.Controller
                 return;
             }
 
-
+            // Potvrzeni smazani
             var result = MessageBox.Show(
                $"Opravdu chcete smazat známku {selectedGrade.subject} {selectedGrade.value}?",
                "Potvrzení smazání",
@@ -161,6 +168,8 @@ namespace ZakovskaApp.Controller
                 return;
             }
 
+
+            // Potvrzeni smazani
             var result = MessageBox.Show(
                 $"Opravdu chcete smazat studenta {student.FullName}?",
                 "Potvrzení smazání",
@@ -187,7 +196,7 @@ namespace ZakovskaApp.Controller
                 return;
             }
 
-            int studentId = student.Id;
+          
 
             if (string.IsNullOrWhiteSpace(_view.GetSubject()))
             {
@@ -213,12 +222,15 @@ namespace ZakovskaApp.Controller
             _view.ShowStudentDetails(student);
         }
 
+
+        // Pomocna metoda pro obnovu dat v gridu po každé změně
         private void RefreshGrid()
         {
             List<Student> list = _service.GetAllStudents();
             _view.DisplayStudents(list);
         }
 
+        // Ulozeni a nacteni dat do souboru json
         private void OnSave(object sender, EventArgs e)
         {
           
@@ -263,6 +275,7 @@ namespace ZakovskaApp.Controller
             }
         }
 
+        // Vygeneruje náhodného studenta se známkami
         private void GenerateTestData(object sender, EventArgs e)
         {
             

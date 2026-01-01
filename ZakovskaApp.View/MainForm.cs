@@ -10,8 +10,11 @@ using System.Windows.Forms;
 using ZakovskaApp.Data;
 namespace ZakovskaApp.View
 {
+    // Hlavní okno aplikace - View v MVP, obsahuje UI prvky a vyvolává události pro Presenter
     public partial class MainForm : Form
     {
+
+        // Definice událostí pro komunikaci s Presenterem
         public event EventHandler onAddStudent;
         public event EventHandler onAddGrade;
         public event EventHandler onStudentSelected;
@@ -33,7 +36,7 @@ namespace ZakovskaApp.View
         {
             InitializeComponent();
 
-
+            // ContextMenu pro right cĺick na známku v listu pro smazání známky
             ContextMenuStrip gradeMenu = new ContextMenuStrip();
             ToolStripMenuItem deleteItem = new ToolStripMenuItem("Smazat známku");
 
@@ -42,6 +45,7 @@ namespace ZakovskaApp.View
 
             lstDetail.ContextMenuStrip = gradeMenu;
 
+            // Zajištění výběru známky při right clicku pro zobrazení context menu
             lstDetail.MouseDown += (s, e) =>
             {
                 if (e.Button == MouseButtons.Right)
@@ -53,8 +57,8 @@ namespace ZakovskaApp.View
                     }
                 }
             };
-           
 
+            // Přiřazení událostí tlačítkům a dalším ovládacím prvkům
             btnAddStudent.Click += (s, e) => onAddStudent?.Invoke(this, EventArgs.Empty);
             btnAddGrade.Click += (s, e) => onAddGrade?.Invoke(this, EventArgs.Empty);
             gridStudents.SelectionChanged += (s, e) => onStudentSelected?.Invoke(this, EventArgs.Empty);
@@ -67,8 +71,8 @@ namespace ZakovskaApp.View
             btnEdit.Click += (s, e) => onEditStudent?.Invoke(this, EventArgs.Empty);
 
             btnEditGrade.Click += (s, e) => onEditGrade?.Invoke(this, EventArgs.Empty);
-          
 
+            // Synchronizace výběru známky v listu s poli pro úpravu známky
             lstDetail.SelectedIndexChanged += (s, e) =>
             {
                 if (lstDetail.SelectedItem is Grade z)
@@ -81,8 +85,8 @@ namespace ZakovskaApp.View
         }
 
 
-      
 
+        // Metody pro získání vstupních dat z UI prvků
 
         public string GetFirstName()
         {
@@ -110,6 +114,7 @@ namespace ZakovskaApp.View
             return null;
         }
 
+        // Metody pro aktualizaci UI prvků
         public void DisplayStudents(List<Student> studenti)
         {
 
@@ -156,6 +161,12 @@ namespace ZakovskaApp.View
             }
         }
 
+        public Grade GetSelectedGrade()
+        {
+            if (lstDetail.SelectedItem is Grade z) return z;
+            return null;
+        }
+
         public void ResetGradeInputs()
         {
             cmbPredmet.SelectedIndex = -1;
@@ -169,6 +180,7 @@ namespace ZakovskaApp.View
             txtPrijmeni.Text = "";
         }
 
+        // Metody pro zobrazení dialogů pro uložení a načtení souborů
         public string GetSaveFileName()
         {
             using (SaveFileDialog sfd = new SaveFileDialog())
@@ -196,11 +208,7 @@ namespace ZakovskaApp.View
             return string.Empty;
         }
 
-        public Grade GetSelectedGrade()
-        {
-            if (lstDetail.SelectedItem is Grade z) return z;
-            return null;
-        }
+    
 
         private void MainForm_Load(object sender, EventArgs e)
         {

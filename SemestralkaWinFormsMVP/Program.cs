@@ -17,13 +17,16 @@ namespace SemestralkaWinFormsMVP
         {
             ApplicationConfiguration.Initialize();
 
+            //Model
             SchoolService service = new SchoolService();
-           
-
+         
+            //View 
             MainForm view = new MainForm();
 
+            //Presenter
             ZakovskaController controller = new ZakovskaController(view, service);
 
+            //Run app
             controller.Show();
 
 

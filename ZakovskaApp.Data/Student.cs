@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZakovskaApp.Data
 {
+    // Student, Model v MVP
     public class Student
     {
         public int Id { get; set; }
