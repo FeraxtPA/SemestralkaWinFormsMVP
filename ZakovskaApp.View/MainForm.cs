@@ -34,6 +34,23 @@ namespace ZakovskaApp.View
             gridStudents.DataSource = _bsStudents;
 
             
+            gridStudents.ReadOnly = false;
+
+            gridStudents.AllowUserToAddRows = false;
+            gridStudents.AllowUserToDeleteRows = false; 
+
+            if (gridStudents.Columns["Id"] != null)
+            {
+                gridStudents.Columns["Id"].ReadOnly = true;
+                gridStudents.Columns["Id"].DefaultCellStyle.BackColor = Color.LightGray;
+            }
+
+            if (gridStudents.Columns["Average"] != null)
+            {
+                gridStudents.Columns["Average"].ReadOnly = true; 
+                gridStudents.Columns["Average"].DefaultCellStyle.Format = "N2"; 
+            }
+
             _bsGrades.DataSource = _bsStudents;
             _bsGrades.DataMember = "Grades";
 
