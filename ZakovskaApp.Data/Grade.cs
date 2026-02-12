@@ -1,25 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace ZakovskaApp.Data
 {
-    // Známka studenta, Model v MVP
-    public class Grade
+    public class Grade : INotifyPropertyChanged
     {
-        public int value { get; set; }
-        public string subject { get; set; }
+        private int _value;
+        private string _subject;
+        private DateTime _date = DateTime.Now;
 
-        public DateTime date { get; set; } = DateTime.Now;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-
-        // Pro zobrazení v ListBoxu
-        public override string ToString()
+        public int value
         {
-            return $"{subject}: {value} ({date.ToShortDateString()})";
+            get => _value;
+            set { _value = value; OnPropertyChanged(); OnPropertyChanged(nameof(DisplayInfo)); }
         }
 
+        public string subject
+        {
+            get => _subject;
+            set { _subject = value; OnPropertyChanged(); OnPropertyChanged(nameof(DisplayInfo)); }
+        }
+
+        public DateTime date
+        {
+            get => _date;
+            set { _date = value; OnPropertyChanged(); OnPropertyChanged(nameof(DisplayInfo)); }
+        }
+
+       
+        public string DisplayInfo => $"{subject}: {value} ({date.ToShortDateString()})";
+
+        public override string ToString() => DisplayInfo;
+
+        protected void OnPropertyChanged([CallerMemberName] string propName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
     }
 }

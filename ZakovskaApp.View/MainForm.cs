@@ -1,220 +1,123 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.ComponentModel;
 using ZakovskaApp.Data;
+
 namespace ZakovskaApp.View
 {
-    // Hlavní okno aplikace - View v MVP, obsahuje UI prvky a vyvolává události pro Presenter
     public partial class MainForm : Form
     {
-
-        // Definice událostí pro komunikaci s Presenterem
-        public event EventHandler onAddStudent;
-        public event EventHandler onAddGrade;
-        public event EventHandler onStudentSelected;
-
-        public event EventHandler onSave;
-        public event EventHandler onLoad;
-
-        public event EventHandler onGenerateData;
-
-        public event EventHandler onDeleteStudent;
-        public event EventHandler onEditStudent;
-
-        public event EventHandler onEditGrade;
-        public event EventHandler onDeleteGrade;
+       
+        private BindingSource _bsStudents = new BindingSource();
+        private BindingSource _bsGrades = new BindingSource();
 
         
+        public event EventHandler onAddStudent;
+        public event EventHandler onAddGrade;
+        public event EventHandler onSave;
+        public event EventHandler onLoad;
+        public event EventHandler onGenerateData;
+        public event EventHandler onDeleteStudent;
+        public event EventHandler onDeleteGrade;
 
         public MainForm()
         {
             InitializeComponent();
+            SetupBinding();
+            AttachEvents();
+        }
 
-            // ContextMenu pro right cĺick na známku v listu pro smazání známky
-            ContextMenuStrip gradeMenu = new ContextMenuStrip();
-            ToolStripMenuItem deleteItem = new ToolStripMenuItem("Smazat známku");
+        private void SetupBinding()
+        {
+           
+            _bsStudents.DataSource = typeof(Student);
 
-            deleteItem.Click += (s, e) => onDeleteGrade?.Invoke(this, EventArgs.Empty);
-            gradeMenu.Items.Add(deleteItem);
+           
+            gridStudents.DataSource = _bsStudents;
 
-            lstDetail.ContextMenuStrip = gradeMenu;
+            
+            _bsGrades.DataSource = _bsStudents;
+            _bsGrades.DataMember = "Grades";
 
-            // Zajištění výběru známky při right clicku pro zobrazení context menu
-            lstDetail.MouseDown += (s, e) =>
-            {
-                if (e.Button == MouseButtons.Right)
-                {
-                    int index = lstDetail.IndexFromPoint(e.Location);
-                    if (index != ListBox.NoMatches)
-                    {
-                        lstDetail.SelectedIndex = index;
-                    }
-                }
-            };
+           
+            lstDetail.DataSource = _bsGrades;
+            lstDetail.DisplayMember = "DisplayInfo"; 
 
-            // Přiřazení událostí tlačítkům a dalším ovládacím prvkům
+           
+            txtJmeno.DataBindings.Add("Text", _bsStudents, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
+            txtPrijmeni.DataBindings.Add("Text", _bsStudents, "Surname", true, DataSourceUpdateMode.OnPropertyChanged);
+
+            
+            numZnamka.DataBindings.Add("Value", _bsGrades, "value", true, DataSourceUpdateMode.OnPropertyChanged);
+            cmbPredmet.DataBindings.Add("Text", _bsGrades, "subject", true, DataSourceUpdateMode.OnPropertyChanged);
+        }
+
+        private void AttachEvents()
+        {
+            
             btnAddStudent.Click += (s, e) => onAddStudent?.Invoke(this, EventArgs.Empty);
+            btnDelete.Click += (s, e) => onDeleteStudent?.Invoke(this, EventArgs.Empty);
+
             btnAddGrade.Click += (s, e) => onAddGrade?.Invoke(this, EventArgs.Empty);
-            gridStudents.SelectionChanged += (s, e) => onStudentSelected?.Invoke(this, EventArgs.Empty);
+          
+            btnDeleteGrade.Click += (s, e) => onDeleteGrade?.Invoke(this, EventArgs.Empty); 
+
+            // Kontextové menu pro mazání známky
+            var contextMenu = new ContextMenuStrip();
+            contextMenu.Items.Add("Smazat známku", null, (s, e) => onDeleteGrade?.Invoke(this, EventArgs.Empty));
+            lstDetail.ContextMenuStrip = contextMenu;
 
             btnSave.Click += (s, e) => onSave?.Invoke(this, EventArgs.Empty);
             btnLoad.Click += (s, e) => onLoad?.Invoke(this, EventArgs.Empty);
             btnGen.Click += (s, e) => onGenerateData?.Invoke(this, EventArgs.Empty);
-
-            btnDelete.Click += (s, e) => onDeleteStudent?.Invoke(this, EventArgs.Empty);
-            btnEdit.Click += (s, e) => onEditStudent?.Invoke(this, EventArgs.Empty);
-
-            btnEditGrade.Click += (s, e) => onEditGrade?.Invoke(this, EventArgs.Empty);
-
-            // Synchronizace výběru známky v listu s poli pro úpravu známky
-            lstDetail.SelectedIndexChanged += (s, e) =>
-            {
-                if (lstDetail.SelectedItem is Grade z)
-                {
-                    cmbPredmet.Text = z.subject;
-                    numZnamka.Value = z.value;
-                }
-
-            };
         }
 
+        
 
-
-        // Metody pro získání vstupních dat z UI prvků
-
-        public string GetFirstName()
+        
+        public void SetDataSource(BindingList<Student> students)
         {
-            return txtJmeno.Text;
+            _bsStudents.DataSource = students;
         }
 
-        public string GetLastName()
-        {
-            return txtPrijmeni.Text;
-        }
+       
+        public Student CurrentStudent => _bsStudents.Current as Student;
 
-        public string GetSubject()
-        {
-            return cmbPredmet.Text;
-        }
+        
+        public Grade CurrentGrade => _bsGrades.Current as Grade;
 
-        public int GetGradeValue()
-        {
-            return (int)numZnamka.Value;
-        }
-
-        public Student GetSelectedStudent()
-        {
-            if (gridStudents.CurrentRow?.DataBoundItem is Student s) return s;
-            return null;
-        }
-
-        // Metody pro aktualizaci UI prvků
-        public void DisplayStudents(List<Student> studenti)
-        {
-
-            var bindingSource = new BindingSource();
-            bindingSource.DataSource = new List<Student>(studenti);
-
-            gridStudents.DataSource = bindingSource;
-
-
-        }
-
-        public void SelectStudent(int studentId)
-        {
-            gridStudents.ClearSelection();  
-
-            foreach (DataGridViewRow row in gridStudents.Rows)
-            {
-                if (row.DataBoundItem is Student s && s.Id == studentId)
-                {
-                    row.Selected = true;
-                    gridStudents.CurrentCell = row.Cells[0];
-                    break;
-                }
-            }
-        }
-
-        public void ShowStudentDetails(Student student)
-        {
-            lstDetail.Items.Clear();
-            if (student != null)
-            {
-                txtJmeno.Text = student.Name;
-                txtPrijmeni.Text = student.Surname;
-
-                foreach (var g in student.Grades)
-                {
-                    lstDetail.Items.Add(g);
-                }
-            }
-            else
-            {
-                txtJmeno.Text = "";
-                txtPrijmeni.Text = "";
-            }
-        }
-
-        public Grade GetSelectedGrade()
-        {
-            if (lstDetail.SelectedItem is Grade z) return z;
-            return null;
-        }
-
-        public void ResetGradeInputs()
-        {
-            cmbPredmet.SelectedIndex = -1;
-            numZnamka.Value = 1;           
-            cmbPredmet.Focus();          
-        }
-
-        public void ClearInput()
-        {
-            txtJmeno.Text = "";
-            txtPrijmeni.Text = "";
-        }
-
-        // Metody pro zobrazení dialogů pro uložení a načtení souborů
+        
         public string GetSaveFileName()
         {
-            using (SaveFileDialog sfd = new SaveFileDialog())
-            {
-                sfd.Filter = "JSON soubory (*.json)|*.json|Všechny soubory (*.*)|*.*";
-                sfd.DefaultExt = "json";
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    return sfd.FileName;
-                }
-            }
-            return string.Empty;
+            using (var sfd = new SaveFileDialog { Filter = "JSON|*.json" })
+                return sfd.ShowDialog() == DialogResult.OK ? sfd.FileName : null;
         }
 
         public string GetOpenFileName()
         {
-            using (OpenFileDialog ofd = new OpenFileDialog())
-            {
-                ofd.Filter = "JSON soubory (*.json)|*.json|Všechny soubory (*.*)|*.*";
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    return ofd.FileName;
-                }
-            }
-            return string.Empty;
+            using (var ofd = new OpenFileDialog { Filter = "JSON|*.json" })
+                return ofd.ShowDialog() == DialogResult.OK ? ofd.FileName : null;
         }
 
-    
+        
+        public void SelectStudent(Student student)
+        {
+            if (student != null)
+            {
+                int index = _bsStudents.IndexOf(student);
+                if (index >= 0)
+                {
+                    _bsStudents.Position = index; 
+                }
+            }
+        }
+
+        public void FocusNameInput()
+        {
+            txtJmeno.Focus();
+            txtJmeno.SelectAll(); // Označí text, aby šel rovnou přepsat
+        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
         }
-
-      
     }
 }

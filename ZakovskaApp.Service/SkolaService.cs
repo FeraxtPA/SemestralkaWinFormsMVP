@@ -1,108 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZakovskaApp.Data;
-
+﻿using System.ComponentModel;
 using System.Text.Json;
-using System.IO;
-
+using ZakovskaApp.Data;
 
 namespace ZakovskaApp.Service
 {
-    // Aplikační logika - Service (Model v MVP)
     public class SchoolService
     {
-        private List<Student> _students;
+        
+        private BindingList<Student> _students;
 
         public SchoolService()
         {
-            _students = new List<Student>();
+            _students = new BindingList<Student>();
         }
 
-        public List<Student> GetAllStudents()
+        public BindingList<Student> GetAllStudents()
         {
             return _students;
         }
 
-        public void CreateStudent(string name, string surname)
+        
+        public Student CreateStudent(string name, string surname)
         {
-
             int newId = _students.Any() ? _students.Max(s => s.Id) + 1 : 1;
-
-            Student student = new Student
-            {
-                Id = newId,
-                Name = name,
-                Surname = surname
-                
-            };
+            Student student = new Student { Id = newId, Name = name, Surname = surname };
             _students.Add(student);
+            return student;
         }
 
-        public void GradeStudent(int studentId, string subject, int value)
+        public void GradeStudent(Student student, string subject, int value)
         {
-            Student student = _students.FirstOrDefault(s => s.Id == studentId);
             if (student != null)
             {
-                Grade grade = new Grade
-                {
-                    subject = subject,
-                    value = value
-                };
-                student.Grades.Add(grade);
+                student.Grades.Add(new Grade { subject = subject, value = value });
             }
         }
 
-        public void UpdateStudent(int studentId, string newName, string newSurname)
+        public void DeleteStudent(Student student)
         {
-            Student student = _students.FirstOrDefault(s => s.Id == studentId);
-            if (student != null)
-            {
-                student.Name = newName;
-                student.Surname = newSurname;
-            }
+            if (student != null) _students.Remove(student);
         }
 
-        public void DeleteStudent(int studentId)
+        public void DeleteGrade(Student student, Grade grade)
         {
-            Student student = _students.FirstOrDefault(s => s.Id == studentId);
-            if (student != null)
-            {
-                _students.Remove(student);
-            }
-        }
-
-        public void UpdateGrade(int studentId, Grade originalGrade, string newSubject, int newValue)
-        {
-            Student student = _students.FirstOrDefault(s => s.Id == studentId);
-            
-            if (student != null)
-            {
-                Grade grade = student.Grades.FirstOrDefault(z => z == originalGrade);
-                if (grade != null)
-                {
-                    grade.subject = newSubject;
-                    grade.value = newValue;
-                }
-            }
-        }
-
-        public void DeleteGrade(int studentId, Grade gradeToDelete)
-        {
-            Student student = _students.FirstOrDefault(s => s.Id == studentId);
-            if (student != null)
-            {
-                student.Grades.Remove(gradeToDelete);
-            }
-        }
-
-        public void SaveData(string filePath)
-        {
-            string json = JsonSerializer.Serialize(_students, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(filePath, json);
+            if (student != null && grade != null) student.Grades.Remove(grade);
         }
 
         public void LoadData(string filePath)
@@ -110,8 +51,23 @@ namespace ZakovskaApp.Service
             if (File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
-                _students = JsonSerializer.Deserialize<List<Student>>(json) ?? new List<Student>();
+                var loaded = JsonSerializer.Deserialize<List<Student>>(json);
+
+                _students.Clear();
+                if (loaded != null)
+                {
+                    foreach (var s in loaded) _students.Add(s);
+                }
             }
         }
+
+        public void SaveData(string filePath)
+        {
+            
+            string json = JsonSerializer.Serialize(_students, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(filePath, json);
+        }
+
+       
     }
 }

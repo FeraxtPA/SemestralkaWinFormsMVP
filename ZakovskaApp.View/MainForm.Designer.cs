@@ -40,8 +40,7 @@
             btnLoad = new Button();
             btnGen = new Button();
             btnDelete = new Button();
-            btnEdit = new Button();
-            btnEditGrade = new Button();
+            btnDeleteGrade = new Button();
             ((System.ComponentModel.ISupportInitialize)gridStudents).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numZnamka).BeginInit();
             SuspendLayout();
@@ -158,23 +157,14 @@
             btnDelete.Text = "Odstraň žáka";
             btnDelete.UseVisualStyleBackColor = true;
             // 
-            // btnEdit
-            // 
-            btnEdit.Location = new Point(860, 52);
-            btnEdit.Name = "btnEdit";
-            btnEdit.Size = new Size(142, 34);
-            btnEdit.TabIndex = 12;
-            btnEdit.Text = "Upravit žáka";
-            btnEdit.UseVisualStyleBackColor = true;
-            // 
             // btnEditGrade
             // 
-            btnEditGrade.Location = new Point(712, 132);
-            btnEditGrade.Name = "btnEditGrade";
-            btnEditGrade.Size = new Size(142, 34);
-            btnEditGrade.TabIndex = 13;
-            btnEditGrade.Text = "Uprav  známku";
-            btnEditGrade.UseVisualStyleBackColor = true;
+            btnDeleteGrade.Location = new Point(712, 132);
+            btnDeleteGrade.Name = "btnEditGrade";
+            btnDeleteGrade.Size = new Size(171, 34);
+            btnDeleteGrade.TabIndex = 13;
+            btnDeleteGrade.Text = "Smazat známku";
+            btnDeleteGrade.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -182,8 +172,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(1258, 664);
-            Controls.Add(btnEditGrade);
-            Controls.Add(btnEdit);
+            Controls.Add(btnDeleteGrade);
             Controls.Add(btnDelete);
             Controls.Add(btnGen);
             Controls.Add(btnLoad);
@@ -219,7 +208,6 @@
         private Button btnLoad;
         private Button btnGen;
         private Button btnDelete;
-        private Button btnEdit;
-        private Button btnEditGrade;
+        private Button btnDeleteGrade;
     }
 }
