@@ -45,8 +45,7 @@ namespace ZakovskaApp.Controller
             var student = _view.CurrentStudent;
             if (student == null) return;
 
-            if (MessageBox.Show($"Smazat {student.FullName}?", "Potvrzení",
-                MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (_view.ShowConfirmation($"Opravdu chcete smazat studenta {student.FullName}?"))
             {
                 _service.DeleteStudent(student);
             }
@@ -68,7 +67,7 @@ namespace ZakovskaApp.Controller
 
             if (student != null && grade != null)
             {
-                if (MessageBox.Show($"Smazat známku {grade}?", "Potvrzení", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (_view.ShowConfirmation($"Opravdu chcete smazat známku {grade}?"))
                 {
                     _service.DeleteGrade(student, grade);
                 }
@@ -88,13 +87,41 @@ namespace ZakovskaApp.Controller
         private void OnSave(object sender, EventArgs e)
         {
             string path = _view.GetSaveFileName();
-            if (!string.IsNullOrEmpty(path)) _service.SaveData(path);
+            if (!string.IsNullOrEmpty(path))
+            {
+                try
+                {
+                    _service.SaveData(path);
+                    _view.ShowInfo("Data byla úspěšně uložena.");
+                }
+                catch (Exception ex)
+                {
+                    _view.ShowError($"Chyba při ukládání: {ex.Message}");
+                }
+            }
         }
 
         private void OnLoad(object sender, EventArgs e)
         {
+     
             string path = _view.GetOpenFileName();
-            if (!string.IsNullOrEmpty(path)) _service.LoadData(path);
+
+            
+            if (string.IsNullOrEmpty(path)) return;
+
+            try
+            {
+               
+                _service.LoadData(path);
+
+               
+                _view.ShowInfo("Data byla úspěšně načtena.");
+            }
+            catch (Exception ex)
+            {
+             
+                _view.ShowError($"Chyba při načítání souboru:\n{ex.Message}");
+            }
         }
     }
 }

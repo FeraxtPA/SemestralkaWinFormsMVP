@@ -96,8 +96,24 @@ namespace ZakovskaApp.View
             using (var ofd = new OpenFileDialog { Filter = "JSON|*.json" })
                 return ofd.ShowDialog() == DialogResult.OK ? ofd.FileName : null;
         }
+        // V souboru MainForm.cs přidejte tyto metody:
 
-        
+        public void ShowError(string message)
+        {
+            MessageBox.Show(message, "Chyba", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        public void ShowInfo(string message)
+        {
+            MessageBox.Show(message, "Informace", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        public bool ShowConfirmation(string message)
+        {
+            var result = MessageBox.Show(message, "Potvrzení", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            return result == DialogResult.Yes;
+        }
+
         public void SelectStudent(Student student)
         {
             if (student != null)
